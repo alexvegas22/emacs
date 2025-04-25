@@ -1,0 +1,44 @@
+* Config
+** Emacs [[file:~/.emacs.d/init.el][init.el]]
+** Hyprland [[file:~/.config/hypr/hyprland.conf][conf]]
+** Waybar [[file:~/.config/waybar/config][config]]
+** Dunst [[file:~/.config/dunst/dunstrc][dunstrc]]
+** Bash [[file:~/.bashrc][bashrc]]
+** Zsh [[file:~/nixos-config/modules/home/zsh/default.nix][zsh]]
+** Dotfiles [[file:~/dotfiles][dir]]
+
+* Kubernetes
+** [[file:~/.kube][kube]]
+
+* NixOS
+** [[file:~/nixos-config][nixos-config]]
+** [[file:~/nixos-config/configuration.nix][configuration.nix]]
+** [[file:~/nixos-config/modules/home/package/default.nix][package.nix]]
+
+* Folders
+** [[file:~/Downloads][Downloads]] 
+** [[file:~/Documents][Documents]]
+** [[file:~/Documents/Notes][Notes]]
+** [[file:~/Code/][Code]]
+** [[file:~/Images][Images]]
+** [[file:~/Music][Music]]
+
+* Projects
+** [[file:~/Documents/ETS/Etscalibur/etscalibur-web][etscalibur-web]]
+** [[file:~/Documents/ETS/Cedille][Cedille]]
+** [[file:~/k8s-home][k8-home]]
+** [[file:~/Projects/htb][HTB]]
+** [[file:~/Code/OpFlow][OpFlow]]
+
+* TODO
+
++ open emacs with no splash screen when called with a file
+  
++ Research contour
++ import dotfiles to nix flake config
+  + Hyprland
+  + Waybar
++ get esp32 to work
+
+* LPV
+
