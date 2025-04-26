@@ -186,6 +186,8 @@
                 (setq view-read-only nil) ; Make buffer writable
               (setq view-read-only t)))) ; Ensure view-read-only for other modes
 
+(add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
+
 (add-hook 'view-mode-hook
           (lambda ()
             (when (eq major-mode 'org-mode)
@@ -283,7 +285,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(line-number ((t (:inherit font-lock-comment-face))))
- '(line-number-current-line ((t (:inherit line-number :foreground "gold" :weight bold)))))
+ '(line-number-current-line ((t (:inherit line-number :foreground "pink" :weight bold)))))
 
 (add-hook 'prog-mode-hook 'my-prog-mode-line-numbers)
 
