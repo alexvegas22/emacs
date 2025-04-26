@@ -20,7 +20,9 @@
       kept-old-versions      5) ; and how many of the old
 
 (require 'package)
-
+;; Load custom functions
+(load (expand-file-name "functions.el" user-emacs-directory))
+(require 'functions)
 
 (quelpa
  '(quelpa-use-package
@@ -108,20 +110,12 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 
 (add-hook 'yaml-mode-hook 'flymake-yamllint-setup)
-;; Install projectile
-(use-package projectile
-  :ensure t
-  :config
-  (projectile-mode +1))
-(setq projectile-switch-project-action #'projectile-commander)
 
 ;; Install flycheck for error checking
 (use-package flycheck
   :ensure t)
 (global-flycheck-mode t)
 (setq-default flycheck-disabled-checkers '(css-csslint))
-(with-current-buffer "*scratch*"
-  (flycheck-mode -1))
 
 (with-eval-after-load 'flycheck
   (flycheck-add-mode 'yaml-yamllint 'yaml-mode))
@@ -172,15 +166,15 @@
    '(company company-web crdt dired-preview docker-compose-mode
 	     dockerfile-mode drag-stuff eglot-java elfeed emacsql
 	     emacsql-sqlite ewal flycheck-kotlin flymake-yamllint
-	     gnuplot gnuplot-mode k8s-mode kotlin-mode kubernetes
-	     lsp-java lsp-mode magit man-commands move-text nix-mode
-	     oer-reveal org-bulletproof org-bullets org-krita
+	     gnuplot gnuplot-mode gptel k8s-mode kotlin-mode
+	     kubernetes lsp-java lsp-mode magit man-commands move-text
+	     nix-mode oer-reveal org-bulletproof org-bullets org-krita
 	     org-latex-impatient org-modern org-pretty-tags
 	     org-re-reveal-citeproc org-re-reveal-ref org-roam-ui
 	     org-super-agenda org-transclusion pandoc php-mode
-	     plantuml-mode projectile quelpa quelpa-use-package
-	     restclient sly smex svelte-mode tide typescript-mode yaml
-	     yaml-mode yasnippet yasnippet-snippets)))
+	     plantuml-mode quelpa quelpa-use-package restclient sly
+	     smex svelte-mode tide typescript-mode yaml yaml-mode
+	     yasnippet yasnippet-snippets)))
 
 (with-eval-after-load 'lsp-mode
   (setq lsp-enable-on-type-formatting nil)
@@ -271,72 +265,34 @@
 (setq org-startup-with-inline-images t)
 (setq org-html-inline-image-rules '((png . data)))
 
-(defun insert-org-src-block (language)
-  "Insert an Org source code block for the specified LANGUAGE with completion."
-  (interactive
-   (list (completing-read "Enter language: "
-                          '("elisp" "python" "plantuml" "shell" "bash" "java" "javascript"
-                            "c" "cpp" "rust" "go" "haskell" "ruby" "perl" "r"
-                            "latex" "org" "yaml" "json" "html" "css" "sql" "text")
-                          nil t)))
-  (let ((start (point)))
-    (insert (format "#+BEGIN_SRC %s\n  \n#+END_SRC\n" language))
-    (goto-char (+ start (length (format "#+BEGIN_SRC %s\n" language)) 2))))
-
-(global-set-key (kbd "C-c n s") 'insert-org-src-block)
-
-(defun paste-image-from-clipboard ()
-  "Paste an image from the clipboard as a file in the images/ folder."
-  (interactive)
-  (let* ((dir "./images/")  ;; Folder to save the image
-         (filename (concat dir (make-temp-name "img-") ".png")))
-    (unless (file-exists-p dir)
-      (make-directory dir))  ;; Create the images folder if it doesn't exist
-    (message "Saving image to: %s" filename)
-    (shell-command (concat "wl-paste --type image/png > " filename) t)  ;; Use wl-clipboard
-    (insert (concat "[[file:" filename "]]"))
-    (message "Image saved as %s" filename)))
-
-(global-set-key (kbd "C-c p") 'paste-image-from-clipboard)
-
-(global-set-key (kbd "C-c b e") 'base64-encode-region)
-(global-set-key (kbd "C-c b d") 'base64-decode-region)
-
-  ;;Renders Images inline of an org file
-  (defun do-org-show-all-inline-images ()
-    (interactive)
-    (org-display-inline-images t t))
-  (global-set-key (kbd "C-c i")
-                  'do-org-show-all-inline-images)
-
 (require 'man)
 (set-face-attribute 'Man-overstrike nil :inherit font-lock-type-face :bold t)
 (set-face-attribute 'Man-underline nil :inherit font-lock-keyword-face :underline t)
 
 (drag-stuff-global-mode 1)
-(drag-stuff-define-keys )
+(drag-stuff-define-keys)
 ;;; Global variables
 
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 
-;; Enable relative line numbers in programming modes
-(defun my-prog-mode-line-numbers ()
-  (display-line-numbers-mode 1)
-  (setq display-line-numbers 'relative))
-
-(add-hook 'prog-mode-hook 'my-prog-mode-line-numbers)
-(setq ring-bell-function 'ignore)
-
-(provide 'init)
-
-;;; init.el ends here
-(put 'downcase-region 'disabled nil)
-(put 'upcase-region 'disabled nil)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(line-number ((t (:inherit font-lock-comment-face))))
+ '(line-number-current-line ((t (:inherit line-number :foreground "gold" :weight bold)))))
+
+(add-hook 'prog-mode-hook 'my-prog-mode-line-numbers)
+
+(setq ring-bell-function 'ignore)
+
+(provide 'init)
+
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
+
+(put 'dired-find-alternate-file 'disabled nil)
+;;; init.el ends here
