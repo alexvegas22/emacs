@@ -1,4 +1,4 @@
-;; ~/.emacs.d/custom-functions.el
+;; ~/.emacs.d/functions.el
 (defun insert-org-src-block (language)
   "Insert an Org source code block for the specified LANGUAGE with completion."
   (interactive
@@ -50,5 +50,8 @@
       (message "No face at point!"))))
 (global-set-key (kbd "C-c f") 'show-face-at-point)
 
+(global-set-key (kbd "C-c C-<return>") 'gptel-send)
+
 ;; End of functions.el
 (provide 'functions)
+;;; functions.el ends here

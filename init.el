@@ -21,8 +21,7 @@
 
 (require 'package)
 ;; Load custom functions
-(load (expand-file-name "functions.el" user-emacs-directory))
-(require 'functions)
+(load-file "/home/alex/Code/emacs/functions.el")
 
 (quelpa
  '(quelpa-use-package
@@ -67,29 +66,6 @@
 ;; Plant Uml
 (setq org-plantuml-jar-path "~/.emacs.d/plantuml/plantuml.jar")
 
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((gnuplot        . t)
-   (emacs-lisp . t)
-   (python     . t)
-  ;; (c          . t)
-   (latex      . t)
-   (go         . t)
-   ;;    (perl       . t)
-   ;;    (python     . t)
-   ;;    (kotlin     . t)
-   ;;    (dot        . t)
-   ;;    (css        . t)
-   (plantuml . t)))
-
-(setq org-confirm-babel-evaluate nil
-      org-src-fontify-natively t
-      org-src-tab-acts-natively t)
-
-;; Install Ewal (pywal in emacs)
-(use-package ewal
-  :init (setq ewal-use-built-in-always-p nil))
-
 ;; Install kotlin-mode
 (use-package kotlin-mode
   :mode "\\.kt\\'"
@@ -100,7 +76,7 @@
 (defun my-web-mode-hook ()
   "Hooks for Web mode."
   (setq web-mode-markup-indent-offset 2)
-)
+  )
 (add-hook 'web-mode-hook  'my-web-mode-hook)
 ;; Install Magit
 (use-package magit
@@ -162,19 +138,23 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(wombat))
+ '(custom-safe-themes
+   '(default))
  '(package-selected-packages
-   '(company company-web crdt dired-preview docker-compose-mode
-	     dockerfile-mode drag-stuff eglot-java elfeed emacsql
-	     emacsql-sqlite ewal flycheck-kotlin flymake-yamllint
-	     gnuplot gnuplot-mode gptel k8s-mode kotlin-mode
-	     kubernetes lsp-java lsp-mode magit man-commands move-text
-	     nix-mode oer-reveal org-bulletproof org-bullets org-krita
-	     org-latex-impatient org-modern org-pretty-tags
-	     org-re-reveal-citeproc org-re-reveal-ref org-roam-ui
-	     org-super-agenda org-transclusion pandoc php-mode
-	     plantuml-mode quelpa quelpa-use-package restclient sly
-	     smex svelte-mode tide typescript-mode yaml yaml-mode
-	     yasnippet yasnippet-snippets)))
+   '(2048-game colorful-mode company company-web crdt dired-preview
+	       docker-compose-mode dockerfile-mode doom-themes
+	       drag-stuff eglot-java elfeed emacsql emacsql-sqlite
+	       flycheck-kotlin flycheck-yamllint flymake-yamllint
+	       gnuplot gnuplot-mode gptel hexo k8s-mode kotlin-mode
+	       kubernetes lsp-completion lsp-eslint lsp-java
+	       lsp-tailwindcss magit man-commands move-text nix-mode
+	       oer-reveal org-krita org-latex-impatient org-modern
+	       org-pretty-tags org-re-reveal-citeproc
+	       org-re-reveal-ref org-roam-ui org-transclusion pandoc
+	       php-mode plantuml-mode prettier quelpa
+	       quelpa-use-package restclient sly smex svelte-mode tide
+	       treesit typescript-mode vue-mode wal-mode yaml
+	       yaml-mode yasnippet yasnippet-snippets)))
 
 (with-eval-after-load 'lsp-mode
   (setq lsp-enable-on-type-formatting nil)
@@ -185,8 +165,6 @@
             (if (eq major-mode 'org-mode)
                 (setq view-read-only nil) ; Make buffer writable
               (setq view-read-only t)))) ; Ensure view-read-only for other modes
-
-(add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
 
 (add-hook 'view-mode-hook
           (lambda ()
@@ -200,9 +178,19 @@
 (use-package typescript-mode
   :ensure t
   :mode "\\.ts\\'")
+
 (add-hook 'typescript-mode-hook
           (lambda ()
             (setq-default typescript-indent-level 2)))
+
+(use-package web-mode
+  :ensure t
+  :mode "\\.tsx\\'")
+
+(add-hook 'web-mode-hook
+          (lambda ()
+            (setq-default typescript-indent-level 2)))
+
 (use-package tide
   :ensure t
   :hook ((typescript-mode . tide-setup)
@@ -267,6 +255,26 @@
 (setq org-startup-with-inline-images t)
 (setq org-html-inline-image-rules '((png . data)))
 
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((gnuplot        . t)
+   (emacs-lisp . t)
+   (python     . t)
+   ;; (c          . t)
+   (latex      . t)
+   (go         . t)
+   ;;    (perl       . t)
+   ;;    (python     . t)
+   ;;    (kotlin     . t)
+   ;;    (dot        . t)
+   ;;    (css        . t)
+   (plantuml . t)))
+
+(setq org-confirm-babel-evaluate nil
+      org-src-fontify-natively t
+      org-src-tab-acts-natively t)
+
+
 (require 'man)
 (set-face-attribute 'Man-overstrike nil :inherit font-lock-type-face :bold t)
 (set-face-attribute 'Man-underline nil :inherit font-lock-keyword-face :underline t)
@@ -288,7 +296,7 @@
  '(line-number-current-line ((t (:inherit line-number :foreground "pink" :weight bold)))))
 
 (add-hook 'prog-mode-hook 'my-prog-mode-line-numbers)
-
+(setq gptel-default-mode 'org-mode)
 (setq ring-bell-function 'ignore)
 
 (provide 'init)
